@@ -74,15 +74,19 @@ async function estimate() {
 async function largefile() {
     const start = Date.now()
     const fs = await initfs(10 * 1024 * 1024 * 1024)
-    const file = await create(fs, "largefile.dat")
-    let size = 0
-    for (let i = 0; i < 100; i++) {
-        const array = new Uint8Array(50 * 1024 * 1024)
-        array.fill(i)
-        const blob = new Blob([array])
-        const written = await write(file, size, blob )
-        size += written
-        log(`chunk ${i}: written = ${size} in ${Date.now() - start} msec`)
+    for (name of [0,1,2,3,4,5].map( i => `largefile${i}.dat`)) {
+        const file = await create(fs, name)
+        let size = 0
+        log(`<u>File ${name} created, start writing</u>`)
+        for (let i = 0; i < 100; i++) {
+            const array = new Uint8Array(100 * 1024 * 1024)
+            array.fill(i)
+            const blob = new Blob([array])
+            const written = await write(file, size, blob )
+            size += written
+            log(`<li>chunk ${i}: written = ${size} in ${Date.now() - start} msec</li>`)
+        }
+        log(`<li>File ${name} finished to write</li>`)
     }
 
 }
