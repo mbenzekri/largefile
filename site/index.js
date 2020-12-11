@@ -78,7 +78,7 @@ async function largefile() {
         const file = await create(fs, name)
         let size = 0
         log(`<u>File ${name} created, start writing</u>`)
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 10; i++) {
             const array = new Uint8Array(100 * 1024 * 1024)
             array.fill(i)
             const blob = new Blob([array])
